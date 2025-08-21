@@ -1,0 +1,85 @@
+{
+  "name": "FlowMate",
+  "short_name": "FlowMate",
+  "id": "/?source=pwa",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "dir": "ltr",
+  "lang": "en",
+  "description": "FlowMate - Your respiratory care assistant",
+  "orientation": "portrait-primary",
+  "categories": ["productivity", "utilities", "medical", "health"],
+
+  "icons": [
+    {
+      "src": "/assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icon-192-maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/assets/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+
+  "screenshots": [
+    {
+      "src": "/assets/screenshots/home-1080x1920.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/assets/screenshots/home-1920x1080.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
+
+  "shortcuts": [
+    {
+      "name": "Calculators",
+      "short_name": "Calc",
+      "description": "Open calculators quickly",
+      "url": "/?page=calculators"
+    },
+    {
+      "name": "Notes",
+      "short_name": "Notes",
+      "description": "Open notes",
+      "url": "/?page=notes"
+    },
+    {
+      "name": "Schedule",
+      "short_name": "Schedule",
+      "description": "Open schedule",
+      "url": "/?page=schedule"
+    }
+  ],
+
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  },
+
+  "prefer_related_applications": false,
+  "related_applications": []
+}

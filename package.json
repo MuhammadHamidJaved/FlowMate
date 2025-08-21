@@ -1,0 +1,23 @@
+{
+  "name": "flowmate-app",
+  "version": "1.0.0",
+  "description": "FlowMate - Respiratory Care Assistant",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'Static site - no build needed'",
+    "start": "vercel dev --listen 3000"
+  },
+  "keywords": [
+    "respiratory-care",
+    "medical",
+    "healthcare",
+    "pwa",
+    "calculator"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "vercel": "^33.0.0"
+  }
+}

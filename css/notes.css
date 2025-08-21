@@ -1,0 +1,1103 @@
+:root {
+    --primary-color: #3b82f6;
+    --primary-dark: #2563eb;
+    --secondary-color: #f8fafc;
+    --text-color: #1e293b;
+    --text-light: #64748b;
+    --bg-color: #f8fafc;
+    --card-bg: white;
+    --border-color: #e2e8f0;
+    --shadow-color: rgba(0,0,0,0.1);
+    --red-color: #ef4444;
+    --red-dark: #dc2626;
+    --purple-color: #a855f7;
+    --purple-dark: #9333ea;
+    --teal-color: #14b8a6;
+    --teal-dark: #0d9488;
+}
+
+.dark-mode {
+    --primary-color: #3b82f6;
+    --primary-dark: #60a5fa;
+    --secondary-color: #1e293b;
+    --text-color: #f8fafc;
+    --text-light: #cbd5e1;
+    --bg-color: #0f172a;
+    --card-bg: #1e293b;
+    --border-color: #334155;
+    --shadow-color: rgba(0,0,0,0.3);
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+        /* Notes System Styles */
+        .notes-system {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        .notes-header, .notes-title, .notes-actions, .notes-search, .search-input, .notes-filters, .filter-tag, .notes-grid, .note-item, .note-title, .note-content, .note-footer, .note-tags, .note-tag, .note-date, .note-form, .form-title, .form-group, .form-label, .form-input, .form-textarea, .form-actions, .empty-state {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .welcome-banner {
+            background: linear-gradient(90deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 2rem 1.5rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+            /* Add any other homepage banner styles here for consistency */
+        }
+        .gradient-banner {
+            background: linear-gradient(90deg, #2563eb 0%, #1e40af 100%);
+            color: white;
+            padding: 2rem 1.5rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+        }
+        .tag {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+            border-radius: 9999px;
+            padding: 2px 8px;
+            font-size: 0.75rem;
+        }
+        .soap-tag {
+            border-radius: 9999px;
+            padding: 2px 8px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .soap-s {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+        }
+        .soap-o {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+        .soap-a {
+            background-color: rgba(79, 70, 229, 0.1);
+            color: #4f46e5;
+        }
+        .soap-p {
+            background-color: rgba(236, 72, 153, 0.1);
+            color: #ec4899;
+        }
+        .note-type-tag {
+            border-radius: 9999px;
+            padding: 2px 8px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .soap-note {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+        }
+        .normal-note {
+            background-color: rgba(107, 114, 128, 0.1);
+            color: #6b7280;
+        }
+        .form-input {
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            padding: 0.5rem 0.75rem;
+            width: 100%;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .btn-primary {
+            background-color: #3b82f6;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .btn-primary:hover {
+            background-color: #2563eb;
+        }
+        .btn-secondary {
+            background-color: #e5e7eb;
+            color: #4b5563;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .btn-secondary:hover {
+            background-color: #d1d5db;
+        }
+        .btn-danger {
+            background-color: #ef4444;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+        .soap-section {
+            border-left: 4px solid;
+            padding-left: 12px;
+            margin-bottom: 12px;
+        }
+        .soap-s-border {
+            border-color: #f59e0b;
+        }
+        .soap-o-border {
+            border-color: #10b981;
+        }
+        .soap-a-border {
+            border-color: #4f46e5;
+        }
+        .soap-p-border {
+            border-color: #ec4899;
+        }
+        .tab {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .tab.active {
+            border-bottom: 2px solid #3b82f6;
+            color: #3b82f6;
+            font-weight: 500;
+        }
+        .note-image {
+            max-width: 100%;
+            max-height: 200px;
+            width: auto;
+            height: auto;
+            border-radius: 0.375rem;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .image-preview {
+            max-width: 100%;
+            max-height: 200px;
+            width: auto;
+            height: auto;
+            border-radius: 0.375rem;
+            margin-top: 0.5rem;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Image container for better control */
+        .note-image-container {
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+            border-radius: 0.375rem;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100px;
+        }
+        
+        .note-image-container img {
+            max-width: 100%;
+            max-height: 200px;
+            width: auto;
+            height: auto;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 0.375rem;
+        }
+        
+        /* Dark mode image styles */
+        .dark-mode .note-image-container {
+            background-color: #374151;
+        }
+        
+        .dark-mode .note-image,
+        .dark-mode .image-preview {
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        .toggle-container {
+            display: flex;
+            background-color: #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 0.25rem;
+            width: 100%;
+        }
+        .toggle-option {
+            flex: 1;
+            text-align: center;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .toggle-option.active {
+            background-color: #fff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            font-weight: 500;
+        }
+        .modal {
+            transition: opacity 0.3s ease;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-light);
+            background: none;
+        }
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+        }
+        .empty-title {
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+            font-size: 1.25rem;
+        }
+        .empty-desc {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Line clamp utility for text truncation */
+        .line-clamp-1 {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
+            line-clamp: 1;
+        }
+
+        /* Fix modal positioning to ensure it's centered */
+        #note-modal {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            background-color: rgba(0, 0, 0, 0.5) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            z-index: 9999 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        #note-modal.hidden {
+            display: none !important;
+        }
+
+        #note-modal:not(.hidden) {
+            display: flex !important;
+        }
+
+        #note-modal > .bg-white {
+            margin: 0 auto !important;
+            max-width: 32rem !important;
+            width: 90% !important;
+            max-height: 90vh !important;
+            overflow-y: auto !important;
+            position: relative !important;
+            transform: none !important;
+            left: auto !important;
+            right: auto !important;
+            top: auto !important;
+            bottom: auto !important;
+        }
+
+        /* Additional specificity to override Tailwind */
+        body #note-modal {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            background-color: rgba(0, 0, 0, 0.5) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            z-index: 9999 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        body #note-modal:not(.hidden) {
+            display: flex !important;
+        }
+
+        /* Fix delete modal positioning too */
+        #delete-note-modal {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            background-color: rgba(0, 0, 0, 0.5) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            z-index: 9999 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+        }
+
+        #delete-note-modal.hidden {
+            display: none !important;
+        }
+
+        #delete-note-modal > .bg-white {
+            margin: 0 auto !important;
+            max-width: 28rem !important;
+            width: 90% !important;
+            position: relative !important;
+        }
+
+.note-form, #note-modal, #note-modal > div, .modal, .modal-header, .modal-body, .modal-footer {
+    background-color: var(--card-bg) !important;
+    color: var(--text-color) !important;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.form-title, .form-label, .form-input, .form-textarea, .form-actions, #note-title-input, #note-content-input, #note-tags-input, #subjective-input, #objective-input, #assessment-input, #plan-input {
+    background-color: var(--card-bg) !important;
+    color: var(--text-color) !important;
+    border-color: var(--border-color) !important;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+#note-modal input, #note-modal textarea {
+    background-color: var(--card-bg) !important;
+    color: var(--text-color) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+#note-modal input:focus, #note-modal textarea:focus {
+    outline: none;
+    border-color: var(--primary-color) !important;
+}
+
+#note-modal .btn, #note-modal button {
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.toggle-container, .toggle-option {
+    background-color: var(--card-bg) !important;
+    color: var(--text-color) !important;
+    border-color: var(--border-color) !important;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.toggle-option.active {
+    background-color: var(--primary-color) !important;
+    color: #fff !important;
+    border-color: var(--primary-color) !important;
+}
+
+/* Override hardcoded Tailwind classes in note items */
+.note-item.bg-white,
+.note-item[class*="bg-white"] {
+    background-color: var(--card-bg) !important;
+    color: var(--text-color) !important;
+    border-color: var(--border-color) !important;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+/* Override text colors in note items */
+.note-item .text-gray-600,
+.note-item .text-gray-500,
+.note-item p[class*="text-gray"] {
+    color: var(--text-color) !important;
+    transition: color 0.3s;
+}
+
+/* Override button colors in note items */
+.note-item .text-blue-500,
+.note-item .text-red-500 {
+    transition: color 0.3s;
+}
+
+.note-item .text-blue-500:hover {
+    color: var(--primary-color) !important;
+}
+
+.note-item .text-red-500:hover {
+    color: var(--red-color) !important;
+}
+
+/* Ensure all text in note items uses CSS variables */
+.note-item h3,
+.note-item p,
+.note-item span {
+    color: var(--text-color) !important;
+    transition: color 0.3s;
+}
+
+/* Override any remaining hardcoded background colors */
+[class*="bg-white"] {
+    background-color: var(--card-bg) !important;
+    transition: background-color 0.3s;
+}
+
+/* Override any remaining hardcoded text colors */
+[class*="text-gray"] {
+    color: var(--text-color) !important;
+    transition: color 0.3s;
+        }
+
+.modal-content {
+    background-color: var(--card-bg) !important;
+    color: var(--text-color) !important;
+    transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Additional note image styles for better boundaries */
+        .note-item .note-image {
+            max-width: 100%;
+            max-height: 200px;
+            width: auto;
+            height: auto;
+            border-radius: 0.375rem;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Ensure note items don't overflow */
+        .note-item {
+            overflow: hidden;
+            word-wrap: break-word;
+        }
+        
+        /* Image container within note items */
+        .note-item .mb-3:has(img) {
+            overflow: hidden;
+            border-radius: 0.375rem;
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100px;
+        }
+        
+        .dark-mode .note-item .mb-3:has(img) {
+            background-color: #374151;
+        }
+        
+        /* Responsive image sizing */
+        @media (max-width: 640px) {
+            .note-image {
+                max-height: 150px;
+            }
+            
+            .image-preview {
+                max-height: 150px;
+            }
+        }
+        
+        /* Save success message animations */
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+        
+        /* Save button loading state */
+        .btn-primary:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        
+        /* Dark mode success message */
+        .dark-mode .save-success-message {
+            background-color: #059669;
+            color: white;
+        }
+
+/* Search Input Styles */
+.search-container {
+    position: relative;
+    width: 100%;
+}
+
+#search-notes {
+    width: 100%;
+    padding-left: 2.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.search-icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    pointer-events: none;
+    color: #9ca3af;
+}
+
+.dark-mode .search-icon {
+    color: #6b7280;
+}
+
+/* Ensure proper spacing and prevent overlap */
+.relative {
+    position: relative;
+}
+
+.absolute {
+    position: absolute;
+}
+
+.left-0 {
+    left: 0;
+}
+
+.pl-3 {
+    padding-left: 0.75rem;
+}
+
+.flex {
+    display: flex;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.pointer-events-none {
+    pointer-events: none;
+}
+
+.h-5 {
+    height: 1.25rem;
+}
+
+.w-5 {
+    width: 1.25rem;
+}
+
+.text-gray-400 {
+    color: #9ca3af;
+}
+
+.dark-mode .text-gray-400 {
+    color: #6b7280;
+}
+
+/* Form input specific styles */
+.form-input {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.375rem;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.dark-mode .form-input {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+    color: var(--text-color);
+}
+
+.dark-mode .form-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+/* Prevent background scrolling when modals are open */
+body.modal-open {
+    overflow: hidden;
+}
+
+/* Ensure modals are always scrollable even when body is not */
+#note-modal,
+#delete-note-modal,
+.modal {
+    overflow-y: auto;
+    max-height: 100vh;
+}
+
+/* Prevent scrolling during app initialization */
+html.app-loading,
+body.app-loading {
+    overflow: hidden !important;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+/* Prevent scrolling when loading overlay is visible */
+#app-loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10000;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 20px;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.95) 0%, rgba(37, 99, 235, 0.95) 100%);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Loading overlay content */
+#app-loading > div {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    text-align: center;
+}
+
+/* Loading spinner animation */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Mobile Safari Dynamic Viewport Fixes */
+@supports (-webkit-touch-callout: none) {
+    /* iOS Safari specific fixes */
+    body.modal-open {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        /* Prevent iOS Safari from adjusting viewport */
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Ensure modals work with dynamic viewport */
+    #note-modal,
+    #delete-note-modal,
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100vw;
+        height: 100vh;
+        /* Use viewport units that account for dynamic viewport */
+        height: 100dvh;
+        /* Fallback for older browsers */
+        height: 100vh;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    }
+    
+    /* Modal content should be scrollable */
+    .modal,
+    #note-modal > div,
+    #delete-note-modal > div {
+        max-height: calc(100dvh - 2rem);
+        max-height: calc(100vh - 2rem);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: 1rem;
+        width: calc(100% - 2rem);
+        max-width: 500px;
+    }
+}
+
+/* Additional mobile Safari fixes */
+@media screen and (max-width: 768px) {
+    /* Ensure modals are properly positioned on mobile */
+    #note-modal,
+    #delete-note-modal,
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100vw;
+        height: 100vh;
+        /* Use dynamic viewport height for iOS Safari */
+        height: 100dvh;
+        /* Fallback */
+        height: 100vh;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* Account for safe areas */
+        padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    }
+    
+    /* Modal content adjustments for mobile */
+    .modal,
+    #note-modal > div,
+    #delete-note-modal > div {
+        max-height: calc(100dvh - 2rem);
+        max-height: calc(100vh - 2rem);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: 1rem;
+        width: calc(100% - 2rem);
+        max-width: 500px;
+        /* Ensure modal doesn't get cut off by bottom bar */
+        margin-bottom: max(1rem, env(safe-area-inset-bottom));
+    }
+    
+    /* Ensure modal body is scrollable */
+    .modal-body {
+        max-height: calc(100dvh - 200px);
+        max-height: calc(100vh - 200px);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+}
+
+/* Safe area and mobile compatibility */
+@supports (padding: max(0px)) {
+    /* Modern browsers with safe area support */
+    body {
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+    
+    /* Ensure modals respect safe areas */
+    #note-modal,
+    #delete-note-modal,
+    .modal-overlay {
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+}
+
+/* Prevent zoom on input focus for iOS */
+@media screen and (max-width: 768px) {
+    input, textarea, select {
+        font-size: 16px !important;
+    }
+}
+
+/* Ensure modals are always visible on mobile */
+@media screen and (max-width: 768px) {
+    .modal-overlay.active,
+    #note-modal:not(.hidden),
+    #delete-note-modal:not(.hidden) {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        height: 100dvh !important;
+        z-index: 9999 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background-color: rgba(0, 0, 0, 0.5) !important;
+    }
+    
+    /* Ensure modal content is properly sized */
+    .modal-overlay.active .modal,
+    #note-modal:not(.hidden) > div,
+    #delete-note-modal:not(.hidden) > div {
+        max-height: calc(100vh - 2rem) !important;
+        max-height: calc(100dvh - 2rem) !important;
+        width: calc(100% - 2rem) !important;
+        max-width: 500px !important;
+        margin: 1rem !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+}
+
+/* Comprehensive Mobile Safari Modal Fixes */
+/* Fix for all modals on mobile Safari */
+@media screen and (max-width: 768px) {
+    /* All modals should use dynamic viewport */
+    #login-modal,
+    #note-modal,
+    #delete-note-modal,
+    .modal-overlay,
+    .modal-overlay.active {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        height: 100dvh !important;
+        z-index: 9999 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background-color: rgba(0, 0, 0, 0.5) !important;
+        /* Safe area insets */
+        padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left) !important;
+        /* Prevent iOS Safari issues */
+        -webkit-overflow-scrolling: touch;
+        overflow: hidden;
+    }
+    
+    /* Hide modals properly */
+    #login-modal.hidden,
+    #note-modal.hidden,
+    #delete-note-modal.hidden,
+    .modal-overlay:not(.active) {
+        display: none !important;
+    }
+    
+    /* Modal content containers */
+    #login-modal > div,
+    #note-modal > div,
+    #delete-note-modal > div,
+    .modal-overlay .modal {
+        max-height: calc(100dvh - 2rem) !important;
+        max-height: calc(100vh - 2rem) !important;
+        width: calc(100% - 2rem) !important;
+        max-width: 500px !important;
+        margin: 1rem !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        /* Ensure content doesn't get cut off by bottom bar */
+        margin-bottom: max(1rem, env(safe-area-inset-bottom)) !important;
+        /* Add padding for safe areas */
+        padding-bottom: env(safe-area-inset-bottom) !important;
+    }
+    
+    /* Modal body scrolling */
+    .modal-body {
+        max-height: calc(100dvh - 200px) !important;
+        max-height: calc(100vh - 200px) !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        padding-bottom: env(safe-area-inset-bottom) !important;
+    }
+    
+    /* Prevent zoom on input focus */
+    input, textarea, select {
+        font-size: 16px !important;
+    }
+    
+    /* Ensure buttons are touch-friendly */
+    button, .btn {
+        min-height: 44px !important;
+        min-width: 44px !important;
+    }
+}
+
+/* iOS Safari specific fixes */
+@supports (-webkit-touch-callout: none) {
+    /* iOS Safari viewport fixes */
+    body.modal-open {
+        position: fixed !important;
+        width: 100% !important;
+        height: 100% !important;
+        height: 100dvh !important;
+        overflow: hidden !important;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* All modals on iOS Safari */
+    #login-modal,
+    #note-modal,
+    #delete-note-modal,
+    .modal-overlay {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        height: 100dvh !important;
+        z-index: 9999 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        /* Safe area handling */
+        padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left) !important;
+    }
+    
+    /* Modal content on iOS Safari */
+    #login-modal > div,
+    #note-modal > div,
+    #delete-note-modal > div,
+    .modal-overlay .modal {
+        max-height: calc(100dvh - 2rem) !important;
+        max-height: calc(100vh - 2rem) !important;
+        width: calc(100% - 2rem) !important;
+        max-width: 500px !important;
+        margin: 1rem !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        /* Bottom safe area */
+        margin-bottom: max(1rem, env(safe-area-inset-bottom)) !important;
+        padding-bottom: env(safe-area-inset-bottom) !important;
+    }
+}
+
+/* Additional fixes for specific modal types */
+#login-modal {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.9) 0%, rgba(37, 99, 235, 0.9) 100%) !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+#login-modal > div {
+    background: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(10px) !important;
+    border-radius: 20px !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
+}
+
+/* Optimized Image Handling Styles */
+.image-preview {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+    /* Performance optimizations */
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    /* Prevent layout shifts */
+    aspect-ratio: 16/9;
+    background-color: #f8f9fa;
+}
+
+/* Loading state for image preview */
+.image-preview.loading {
+    opacity: 0.6;
+    filter: blur(1px);
+}
+
+/* Image processing indicator */
+.image-processing {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-light);
+    font-size: 0.875rem;
+}
+
+.image-processing::before {
+    content: '';
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--primary-color);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Image upload container optimizations */
+#image-preview-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Optimize image rendering */
+#image-preview-container img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
+}
+
+/* Dark mode image optimizations */
+.dark-mode .image-preview {
+    background-color: #374151;
+    border-color: #4b5563;
+}
+
+.dark-mode #image-preview-container {
+    background-color: #374151;
+}
+
+/* Mobile optimizations for images */
+@media (max-width: 640px) {
+    .image-preview {
+        max-height: 150px;
+        aspect-ratio: 4/3;
+    }
+    
+    #image-preview-container {
+        min-height: 100px;
+    }
+}

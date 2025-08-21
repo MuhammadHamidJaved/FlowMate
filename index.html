@@ -1,0 +1,2269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <title>FlowMate - Respiratory Care Assistant</title>
+    <meta name="description" content="Professional respiratory care assistant with calculators, scheduling, and clinical notes">
+    <meta name="keywords" content="respiratory care, medical calculator, healthcare, ventilator, ICU">
+    <meta name="theme-color" content="#3b82f6">
+    <link rel="icon" type="image/jpeg" href="assets/Logo Image 2025-07-26 at 3.30.13 PM.jpeg.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="assets/icon-192.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Immediate scroll prevention -->
+    <script>
+        // Prevent scrolling immediately when page loads
+        if (document.documentElement) {
+            document.documentElement.style.overflow = 'hidden';
+            document.documentElement.classList.add('app-loading');
+        }
+        if (document.body) {
+            document.body.style.overflow = 'hidden';
+            document.body.classList.add('app-loading');
+        }
+    </script>
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/notes.css">
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div id="app-loading">
+        <div>
+            <img src="assets/Logo Image 2025-07-26 at 3.30.13 PM.jpeg.jpg" alt="FlowMate Logo" style="width: 80px; height: 80px; border-radius: 16px; margin: 0 auto 20px; display: block;">
+            <h2 style="margin-bottom: 15px; font-size: 32px; font-weight: 600; color: #1e293b;">FlowMate</h2>
+            <div style="color: #64748b; font-size: 16px; margin-bottom: 25px;">Initializing your respiratory care assistant...</div>
+            <div style="display: inline-block; width: 24px; height: 24px; border: 3px solid #3b82f6; border-radius: 50%; border-top-color: transparent; animation: spin 1s linear infinite;" role="status" aria-label="Loading"></div>
+        </div>
+    </div>
+
+    <!-- Skip to main content link for screen readers -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded z-50">Skip to main content</a>
+
+    <!-- Header -->
+    <header class="header" role="banner">
+        <div class="header-content">
+            <div class="logo">
+                <img src="assets/Logo Image 2025-07-26 at 3.30.13 PM.jpeg.jpg" alt="FlowMate Logo" class="logo-image">
+                <span class="logo-text">FlowMate</span>
+            </div>
+            <div class="header-actions" style="display:flex; align-items:center; gap:10px;">
+                <div id="theme-toggle" class="theme-toggle-btn" role="button" tabindex="0" aria-label="Toggle theme" onclick="toggleTheme()" onkeydown="if(event.key === 'Enter' || event.key === ' ') toggleTheme()">
+                    <!-- Moon icon (shown in light mode to switch to dark) -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+                </div>
+                <div class="avatar" onclick="handleAvatarClick()" role="button" tabindex="0" aria-label="Open settings" onkeydown="if(event.key === 'Enter' || event.key === ' ') handleAvatarClick()">YS</div>
+            </div>
+        </div>
+    </header>
+
+
+
+    <!-- Main Content -->
+    <main class="container" id="main-content" role="main">
+        <!-- Home Page -->
+        <div id="home-page" class="page active" role="region" aria-label="Home page">
+            <div class="welcome-banner">
+                <h1 class="welcome-title">Hello, Yousef</h1>
+                <p>Your respiratory care assistant</p>
+            </div>
+
+            <div class="section-title">
+                <span>Quick Calculators</span>
+                <span class="view-all" onclick="showPage('calculators-page')" role="button" tabindex="0" aria-label="View all calculators" onkeydown="if(event.key === 'Enter' || event.key === ' ') showPage('calculators-page')">View All</span>
+            </div>
+            <div class="card-grid">
+                <div class="card" onclick="showCalculator('ibw')" role="button" tabindex="0" aria-label="Ideal Body Weight Calculator" onkeydown="if(event.key === 'Enter' || event.key === ' ') showCalculator('ibw')">
+                    <div class="card-icon blue-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                            <path d="M12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                    </div>
+                    <div class="card-title">Ideal Body Weight</div>
+                </div>
+                
+                <div class="card" onclick="showCalculator('pf')" role="button" tabindex="0" aria-label="P/F Ratio Calculator" onkeydown="if(event.key === 'Enter' || event.key === ' ') showCalculator('pf')">
+                    <div class="card-icon red-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
+                        </svg>
+                    </div>
+                    <div class="card-title">P/F Ratio</div>
+                </div>
+                
+                <div class="card" onclick="showCalculator('rox')" role="button" tabindex="0" aria-label="ROX Index Calculator" onkeydown="if(event.key === 'Enter' || event.key === ' ') showCalculator('rox')">
+                    <div class="card-icon purple-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <div class="card-title">ROX Index</div>
+                </div>
+                
+                <div class="card" onclick="showCalculator('driving')" role="button" tabindex="0" aria-label="Driving Pressure Calculator" onkeydown="if(event.key === 'Enter' || event.key === ' ') showCalculator('driving')">
+                    <div class="card-icon teal-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                        </svg>
+                    </div>
+                    <div class="card-title">Driving Pressure</div>
+                </div>
+            </div>
+
+            <div class="info-grid">
+                <!-- Upcoming Shifts -->
+                <div class="info-card">
+                    <div class="info-header">
+                        <div class="info-title">Upcoming Shifts</div>
+                        <div class="view-all" onclick="handleViewAllClick('schedule')" role="button" tabindex="0" aria-label="View all shifts" onkeydown="if(event.key === 'Enter' || event.key === ' ') handleViewAllClick('schedule')">View All</div>
+                    </div>
+                    <div id="home-shifts-container">
+                        <!-- Dynamic shifts will be loaded here -->
+                        <div class="empty-state">
+                            <div class="empty-icon">📅</div>
+                            <div class="empty-text">No upcoming shifts</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recent Notes -->
+                <div class="info-card">
+                    <div class="info-header">
+                        <div class="info-title">Recent Notes</div>
+                        <div class="view-all" onclick="handleViewAllClick('notes')" role="button" tabindex="0" aria-label="View all notes" onkeydown="if(event.key === 'Enter' || event.key === ' ') handleViewAllClick('notes')">View All</div>
+                    </div>
+                    <div id="home-notes-container">
+                        <!-- Dynamic notes will be loaded here -->
+                        <div class="empty-state">
+                            <div class="empty-icon">📝</div>
+                            <div class="empty-text">No recent notes</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Social Media Banner -->
+            <div class="social-banner">
+                <span>FlowMate by Yousef Sayed. All rights reserved.</span>
+                <a href="https://x.com/sn9q_?s=21" target="_blank" aria-label="Follow us on X (Twitter)">
+                    <svg class="x-logo" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Calculators Page -->
+        <div id="calculators-page" class="page">
+            <div class="welcome-banner">
+                <h1 class="welcome-title">Calculators</h1>
+                <p>Respiratory care calculation tools</p>
+            </div>
+            
+            <div class="card-grid">
+                <div class="card" onclick="showCalculator('ibw')">
+                    <div class="card-icon blue-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                            <path d="M12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                    </div>
+                    <div class="card-title">Ideal Body Weight</div>
+                </div>
+                
+                <div class="card" onclick="showCalculator('pf')">
+                    <div class="card-icon red-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
+                        </svg>
+                    </div>
+                    <div class="card-title">P/F Ratio</div>
+                </div>
+                
+                <div class="card" onclick="showCalculator('rox')">
+                    <div class="card-icon purple-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <div class="card-title">ROX Index</div>
+                </div>
+                
+                <div class="card" onclick="showCalculator('driving')">
+                    <div class="card-icon teal-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                        </svg>
+                    </div>
+                    <div class="card-title">Driving Pressure</div>
+                </div>
+                
+                <div class="card" onclick="showCalculator('airway')">
+                    <div class="card-icon orange-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 6L6 18"></path>
+                            <path d="M6 6l12 12"></path>
+                        </svg>
+                    </div>
+                    <div class="card-title">Airway Resistance</div>
+                </div>
+                
+                <div class="card" onclick="showCalculator('compliance')">
+                    <div class="card-icon green-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 16.1A5 5 0 0 1 5.9 20M2 12.05A9 9 0 0 1 9.95 20M2 8V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-6"></path>
+                            <line x1="2" y1="20" x2="2" y2="20"></line>
+                        </svg>
+                    </div>
+                    <div class="card-title">Static Compliance</div>
+                </div>
+                
+                <div class="card" onclick="showCalculator('mv')">
+                    <div class="card-icon amber-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                    </div>
+                    <div class="card-title">Minute Ventilation</div>
+                </div>
+                
+                <div class="card" onclick="showCalculator('fio2')">
+                    <div class="card-icon pink-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                        </svg>
+                    </div>
+                    <div class="card-title">Desired FiO₂</div>
+                </div>
+                <!-- Winter’s Formula Card -->
+<div class="card" onclick="showCalculator('winter')">
+    <div class="card-icon purple-icon">
+        <!-- أيقونة ثلج -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" 
+                  d="M12 2v20m0-10l6.928-4m-6.928 4l-6.928-4m6.928 4l6.928 4m-6.928-4l-6.928 4M4 6l16 12M20 6L4 18" />
+        </svg>
+    </div>
+    <div class="card-title">Winter’s Formula</div>
+</div>
+
+<!-- Desired RR Card -->
+<div class="card" onclick="showCalculator('desired-rr')">
+    <div class="card-icon teal-icon">
+        <!-- أيقونة هواء -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" 
+                  d="M3 12h12a3 3 0 100-6H9m0 12h6a3 3 0 110 6H3m15-18a3 3 0 013 3v0a3 3 0 01-3 3h-3" />
+        </svg>
+    </div>
+    <div class="card-title">Desired RR</div>
+</div>
+
+
+            </div>
+            
+            
+            <div class="social-banner">
+                <span>FlowMate by Yousef Sayed. All rights reserved.</span>
+                <a href="https://x.com/sn9q_?s=21" target="_blank">
+                    <svg class="x-logo" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Schedule Page -->
+        <div id="schedule-page" class="page">
+            <div class="welcome-banner" style="background: linear-gradient(135deg, #3b82f6, #8b5cf6);">
+                <h1 class="welcome-title">Schedule</h1>
+                <p>Manage your shifts and appointments</p>
+            </div>
+            
+            <div class="schedule-header">
+                <div class="schedule-title">My Shifts</div>
+                <div class="schedule-actions">
+                    <button class="btn btn-primary" onclick="openAddShiftModal()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Add Shift
+                    </button>
+                </div>
+            </div>
+            
+            <div class="schedule-tabs">
+                <div class="schedule-tab active" onclick="switchTab('list')">List View</div>
+                <div class="schedule-tab" onclick="switchTab('calendar')">Calendar View</div>
+            </div>
+            
+            <div id="list-view" class="tab-content active">
+                <div class="info-card" style="margin-bottom: 1.5rem;">
+                    <div class="info-header">
+                        <div class="info-title">Upcoming Shifts</div>
+                    </div>
+                    <div id="shifts-container" class="shift-list">
+                        <!-- Shifts will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+            
+            <div id="calendar-view" class="tab-content" style="display: none;">
+                <div class="info-card" style="margin-bottom: 1.5rem;">
+                    <div class="calendar-header">
+                        <div class="calendar-title" id="calendar-month">May 2023</div>
+                        <div class="calendar-nav">
+                            <div class="calendar-nav-btn" onclick="prevMonth()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="15 18 9 12 15 6"></polyline>
+                                </svg>
+                            </div>
+                            <div class="calendar-nav-btn" onclick="nextMonth()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="calendar-weekdays">
+                        <div class="calendar-view">
+                            <div class="calendar-weekday">Sun</div>
+                            <div class="calendar-weekday">Mon</div>
+                            <div class="calendar-weekday">Tue</div>
+                            <div class="calendar-weekday">Wed</div>
+                            <div class="calendar-weekday">Thu</div>
+                            <div class="calendar-weekday">Fri</div>
+                            <div class="calendar-weekday">Sat</div>
+                        </div>
+                    </div>
+                    
+                    <div id="calendar-days" class="calendar-view">
+                        <!-- Calendar days will be dynamically added here -->
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-header">
+                        <div class="info-title" id="selected-date-title">Shifts for May 15, 2023</div>
+                    </div>
+                    <div id="date-shifts-container" class="shift-list">
+                        <!-- Date-specific shifts will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="social-banner" style="margin-top: 2rem;">
+                <span>FlowMate by Yousef Sayed. All rights reserved.</span>
+                <a href="https://x.com/sn9q_?s=21" target="_blank">
+                    <svg class="x-logo" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    </svg>
+                </a>
+            </div>
+            
+            <!-- Add Shift Modal -->
+            <div id="add-shift-modal" class="modal-overlay">
+                <div class="modal">
+                    <div class="modal-header">
+                        <div class="modal-title">Add New Shift</div>
+                        <button class="modal-close" onclick="closeAddShiftModal()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="form-label" for="shift-date">Date</label>
+                            <input type="date" id="shift-date" class="form-input">
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label class="form-label" for="shift-start">Start Time</label>
+                                    <input type="time" id="shift-start" class="form-input">
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label class="form-label" for="shift-end">End Time</label>
+                                    <input type="time" id="shift-end" class="form-input">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="shift-location">Location</label>
+                            <input type="text" id="shift-location" class="form-input" placeholder="e.g., ICU - Floor 3">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="shift-notes">Notes (optional)</label>
+                            <input type="text" id="shift-notes" class="form-input" placeholder="e.g., Covering for Ahmed">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Shift Type</label>
+                            <div class="radio-group">
+                                <label class="radio-label">
+                                    <input type="radio" name="shift-type" value="morning" checked class="radio-input">
+                                    <span>Morning</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="shift-type" value="evening" class="radio-input">
+                                    <span>Evening</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="shift-type" value="night" class="radio-input">
+                                    <span>Night</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" onclick="closeAddShiftModal()">Cancel</button>
+                        <button class="btn btn-primary" onclick="addShift()">Add Shift</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Delete Confirmation Modal -->
+            <div id="delete-modal" class="modal-overlay">
+                <div class="modal">
+                    <div class="modal-header">
+                        <div class="modal-title">Delete Shift</div>
+                        <button class="modal-close" onclick="closeDeleteModal()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to delete this shift? This action cannot be undone.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" onclick="closeDeleteModal()">Cancel</button>
+                        <button class="btn btn-red" onclick="confirmDeleteShift()">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Notes Page -->
+        <div id="notes-page" class="page">
+            <!-- Banner -->
+            <div class="welcome-banner" style="background: linear-gradient(135deg, #3b82f6, #8b5cf6);">
+                <h1 class="welcome-title">Notes</h1>
+                <p>Your clinical notes and references</p>
+            </div>
+
+        <!-- Search Bar -->
+        <div class="mb-6">
+            <div class="search-container relative">
+                <input type="text" id="search-notes" class="form-input" placeholder="Search notes...">
+                <div class="search-icon absolute left-0 pl-3 flex items-center pointer-events-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Filter Tabs -->
+        <div class="mb-6">
+            <div class="flex border-b overflow-x-auto">
+                <div class="tab active" data-filter="all">All Notes</div>
+                <div class="tab" data-filter="soap">SOAP Notes</div>
+                <div class="tab" data-filter="normal">Normal Notes</div>
+            </div>
+        </div>
+        
+        <!-- Add Note Button -->
+        <div class="mb-6">
+            <button id="add-note-btn" class="btn btn-primary flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                Add Note
+            </button>
+        </div>
+        
+        <!-- Notes List -->
+        <div id="notes-list" class="space-y-4">
+            <!-- Empty state message -->
+            <div id="empty-state" class="empty-state">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <h3 class="text-lg font-medium text-gray-900 mb-1">No notes yet</h3>
+                <p class="text-gray-500 mb-4">Create your first note by clicking the "Add Note" button above.</p>
+            </div>
+        </div>
+        
+        <!-- Social Banner -->
+        <div class="social-banner" style="margin-top: 2rem;">
+            <span>FlowMate by Yousef Sayed. All rights reserved.</span>
+            <a href="https://x.com/sn9q_?s=21" target="_blank">
+                <svg class="x-logo" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <!-- Note Detail Page -->
+    <div id="note-detail-page" class="page hidden">
+        <!-- Banner -->
+        <div class="welcome-banner" style="background: linear-gradient(135deg, #3b82f6, #8b5cf6);">
+            <h1 id="note-detail-title" class="welcome-title">Note Title</h1>
+            <p id="note-detail-date" class="text-sm mt-1">Date</p>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow p-4 sm:p-6 mb-4 sm:mb-6">
+            <div id="note-detail-type" class="mb-4">
+                <!-- Note type badge will be inserted here -->
+    </div>
+            
+            <div id="note-detail-soap-sections">
+                <!-- SOAP sections will be inserted here -->
+    </div>
+            
+            <div id="note-detail-content" class="mb-4">
+                <!-- Note content will be inserted here -->
+    </div>
+            
+            <div id="note-detail-images" class="mb-4">
+                <!-- Note images will be inserted here -->
+</div>
+
+            <div id="note-detail-tags" class="flex flex-wrap gap-2 mb-4">
+                <!-- Tags will be inserted here -->
+            </div>
+            
+            <div class="flex flex-row gap-3">
+                <button class="btn btn-secondary" onclick="notesSystem.showPage('notes-page')">
+                    <div class="flex items-center justify-start">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                        <span>Back to Notes</span>
+                    </div>
+                </button>
+                <button id="edit-detail-note-btn" class="btn btn-primary">
+                    <div class="flex items-center justify-start">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                        <span>Edit Note</span>
+                    </div>
+                </button>
+                <button id="share-note-btn" class="btn btn-secondary" style="display: none;">
+                    <div class="flex items-center justify-start">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
+                        </svg>
+                        <span>Share Note</span>
+                    </div>
+                </button>
+                <button id="unshare-note-btn" class="btn btn-secondary" style="display: none;">
+                    <div class="flex items-center justify-start">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                        <span>Unshare Note</span>
+                    </div>
+                </button>
+                <button id="copy-to-my-notes-btn" class="btn btn-primary" style="display: none;">
+                    <div class="flex items-center justify-start">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                        <span>Copy to My Notes</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add/Edit Note Modal -->
+<div id="note-modal" class="hidden" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center; z-index: 9999; width: 100vw; height: 100vh; margin: 0; padding: 0;">
+    <div style="background-color: white; border-radius: 0.5rem; padding: 1rem; width: 95%; max-width: 32rem; max-height: 95vh; overflow-y: auto; margin: 0 auto; position: relative;">
+        <h3 id="note-modal-title" class="text-xl font-bold mb-4">Add New Note</h3>
+        
+        <div class="space-y-4">
+            <!-- Note Type Toggle -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Note Type</label>
+                <div class="toggle-container">
+                    <div class="toggle-option active" data-type="normal">Normal Note</div>
+                    <div class="toggle-option" data-type="soap">SOAP Note</div>
+                </div>
+</div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1" for="note-title-input">Title</label>
+                <input type="text" id="note-title-input" class="form-input" placeholder="Enter note title">
+    </div>
+
+            <!-- SOAP Sections (initially hidden) -->
+            <div id="soap-sections" class="hidden">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Subjective</label>
+                    <textarea id="subjective-input" class="form-input h-20" placeholder="Patient's symptoms, concerns, and history..."></textarea>
+        </div>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Objective</label>
+                    <textarea id="objective-input" class="form-input h-20" placeholder="Vital signs, examination findings, test results..."></textarea>
+        </div>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Assessment</label>
+                    <textarea id="assessment-input" class="form-input h-20" placeholder="Diagnosis, clinical impression, interpretation..."></textarea>
+        </div>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Plan</label>
+                    <textarea id="plan-input" class="form-input h-20" placeholder="Treatment plan, interventions, follow-up..."></textarea>
+    </div>
+</div>
+
+            <!-- Normal Note Content -->
+            <div id="normal-content-section">
+                <label class="block text-sm font-medium text-gray-700 mb-1" for="note-content-input">Content</label>
+                <textarea id="note-content-input" class="form-input h-32" placeholder="Write your note here..."></textarea>
+            </div>
+            
+            <!-- Image Upload -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Add Image</label>
+                <div class="flex items-center space-x-4">
+                    <label class="btn-secondary cursor-pointer">
+                        <span class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+                            Choose Image
+                        </span>
+                        <input type="file" id="image-upload" class="hidden" accept="image/*">
+                    </label>
+                    <span id="image-name" class="text-sm text-gray-500">No image selected</span>
+                </div>
+                <div id="image-preview-container" class="mt-2 hidden">
+                    <img id="image-preview" class="image-preview">
+</div>
+        </div>
+        
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1" for="note-tags-input">Tags (comma separated)</label>
+                <input type="text" id="note-tags-input" class="form-input" placeholder="e.g., ventilator, protocol, ICU">
+            </div>
+            
+            <div class="flex justify-end space-x-3 pt-2">
+                <button id="cancel-note-btn" class="btn-secondary">Cancel</button>
+                <button id="save-note-btn" class="btn-primary">Save Note</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="delete-note-modal" class="hidden" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center; z-index: 9999; width: 100vw; height: 100vh; margin: 0; padding: 0;">
+    <div class="modal-content" style="border-radius: 0.5rem; padding: 1.5rem; width: 90%; max-width: 28rem; margin: 0 auto; position: relative;">
+        <h3 class="text-xl font-bold mb-4">Delete Note</h3>
+        <p class="mb-6">Are you sure you want to delete this note? This action cannot be undone.</p>
+        
+        <div class="flex justify-end space-x-3">
+            <button id="cancel-delete-btn" class="btn-secondary">Cancel</button>
+            <button id="confirm-delete-btn" class="btn-danger">Delete</button>
+        </div>
+    </div>
+</div>
+
+<!-- Image Viewer Modal -->
+<div id="image-viewer-modal" class="hidden" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.9); display: none; align-items: center; justify-content: center; z-index: 10000; width: 100vw; height: 100vh; margin: 0; padding: 0;">
+    <div class="image-viewer-container" style="position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+        <!-- Close Button -->
+        <button id="close-image-viewer" class="image-viewer-close" style="position: absolute; top: 20px; right: 20px; z-index: 10001; background: rgba(0, 0, 0, 0.5); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background-color 0.3s ease;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+        
+        <!-- Navigation Buttons -->
+        <button id="prev-image-btn" class="image-nav-btn" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); z-index: 10001; background: rgba(0, 0, 0, 0.5); border: none; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background-color 0.3s ease;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+        </button>
+        
+        <button id="next-image-btn" class="image-nav-btn" style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); z-index: 10001; background: rgba(0, 0, 0, 0.5); border: none; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background-color 0.3s ease;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+        </button>
+        
+        <!-- Zoom Controls -->
+        <div class="image-zoom-controls" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 10001; display: flex; gap: 10px; background: rgba(0, 0, 0, 0.5); padding: 10px; border-radius: 25px;">
+            <button id="zoom-out-btn" class="zoom-btn" style="background: rgba(255, 255, 255, 0.2); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background-color 0.3s ease;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    <line x1="8" y1="11" x2="14" y2="11"></line>
+                </svg>
+            </button>
+            <button id="zoom-reset-btn" class="zoom-btn" style="background: rgba(255, 255, 255, 0.2); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background-color 0.3s ease;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
+                    <path d="M21 3v5h-5"></path>
+                    <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
+                    <path d="M3 21v-5h5"></path>
+                </svg>
+            </button>
+            <button id="zoom-in-btn" class="zoom-btn" style="background: rgba(255, 255, 255, 0.2); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background-color 0.3s ease;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    <line x1="11" y1="8" x2="11" y2="14"></line>
+                    <line x1="8" y1="11" x2="14" y2="11"></line>
+                </svg>
+            </button>
+            <button id="download-image-btn" class="zoom-btn" style="background: rgba(255, 255, 255, 0.2); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background-color 0.3s ease;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+            </button>
+        </div>
+        
+        <!-- Image Counter -->
+        <div id="image-counter" class="image-counter" style="position: absolute; top: 20px; left: 20px; z-index: 10001; background: rgba(0, 0, 0, 0.5); color: white; padding: 8px 12px; border-radius: 20px; font-size: 14px; font-weight: 500;">
+            <span id="current-image-index">1</span> / <span id="total-images">1</span>
+        </div>
+        
+        <!-- Main Image Container -->
+        <div id="image-container" class="image-container" style="position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+            <img id="viewer-image" class="viewer-image" style="max-width: 100%; max-height: 100%; object-fit: contain; transition: transform 0.3s ease; cursor: grab;" alt="Full size image">
+        </div>
+    </div>
+</div>
+
+<style>
+/* Settings Page Styles */
+.settings-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.settings-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
+    transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+
+.settings-section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #3b82f6;
+    transition: color 0.3s;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.5rem;
+    transition: color 0.3s;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    transition: border-color 0.2s, background-color 0.3s, color 0.3s;
+    background-color: white;
+    color: #374151;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    resize: vertical;
+    min-height: 80px;
+    transition: border-color 0.2s, background-color 0.3s, color 0.3s;
+    background-color: white;
+    color: #374151;
+}
+
+.form-textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.account-info {
+    margin-bottom: 1rem;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f3f4f6;
+    transition: border-color 0.3s;
+}
+
+.info-item:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    font-weight: 500;
+    color: #374151;
+    transition: color 0.3s;
+}
+
+.info-value {
+    color: #6b7280;
+    font-family: monospace;
+    font-size: 0.875rem;
+    transition: color 0.3s;
+}
+
+.preference-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+}
+
+.preference-info {
+    flex: 1;
+}
+
+.preference-label {
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.25rem;
+    transition: color 0.3s;
+}
+
+.preference-description {
+    font-size: 0.875rem;
+    color: #6b7280;
+    transition: color 0.3s;
+}
+
+.data-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+/* Dark Mode Settings Styles */
+.dark-mode .settings-card {
+    background: #1f2937;
+    border: 1px solid #374151;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .settings-section-title {
+    color: #f9fafb;
+}
+
+.dark-mode .form-group label {
+    color: #d1d5db;
+}
+
+.dark-mode .form-input {
+    background-color: #374151;
+    border: 1px solid #4b5563;
+    color: #f9fafb;
+}
+
+.dark-mode .form-input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.dark-mode .form-textarea {
+    background-color: #374151;
+    border: 1px solid #4b5563;
+    color: #f9fafb;
+}
+
+.dark-mode .form-textarea:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.dark-mode .info-item {
+    border-bottom: 1px solid #374151;
+}
+
+.dark-mode .info-label {
+    color: #d1d5db;
+}
+
+.dark-mode .info-value {
+    color: #9ca3af;
+}
+
+.dark-mode .preference-label {
+    color: #d1d5db;
+}
+
+.dark-mode .preference-description {
+    color: #9ca3af;
+}
+
+.data-actions .btn {
+    flex: 1;
+    min-width: 150px;
+}
+
+/* Switch Toggle */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #3b82f6;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .settings-container {
+        padding: 0 0.5rem;
+    }
+    
+    .settings-card {
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .data-actions {
+        flex-direction: column;
+    }
+    
+    .data-actions .btn {
+        min-width: auto;
+    }
+}
+</style>
+
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'964426acc73d78a1',t:'MTc1MzM2NzgwMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+        <!-- Settings Page -->
+        <div id="settings-page" class="page">
+            <div class="welcome-banner">
+                <h1 class="calculator-title">Settings</h1>
+                <p>Customize your FlowMate experience</p>
+            </div>
+            
+            <div class="settings-container">
+                <!-- Profile Section -->
+                <div class="settings-card">
+                    <h3 class="settings-section-title">Profile</h3>
+                    <form id="profile-form">
+                        <div class="form-group">
+                            <label for="profile-name">Display Name</label>
+                            <input type="text" id="profile-name" class="form-input" placeholder="Enter your display name">
+                        </div>
+                        <div class="form-group">
+                            <label for="profile-email">Email</label>
+                            <input type="email" id="profile-email" class="form-input" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="profile-bio">Bio</label>
+                            <textarea id="profile-bio" class="form-textarea" placeholder="Tell us about yourself..." rows="3"></textarea>
+                        </div>
+                        <button type="submit" id="save-profile-btn" class="btn btn-primary" style="display: none;">Save Profile</button>
+                    </form>
+                </div>
+
+                <!-- Account Section -->
+                <div class="settings-card">
+                    <h3 class="settings-section-title">Account</h3>
+                    <div class="account-info">
+                        <div class="info-item">
+                            <span class="info-label">Username:</span>
+                            <span id="user-username" class="info-value">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">User ID:</span>
+                            <span id="user-id" class="info-value">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Account Created:</span>
+                            <span id="account-created" class="info-value">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Last Login:</span>
+                            <span id="last-login" class="info-value">-</span>
+                        </div>
+                    </div>
+                    <button id="settings-logout-btn" class="btn btn-danger">Sign Out</button>
+                    <button id="change-username-btn" class="btn btn-primary" style="margin-left:0; margin-top:10px; display:block;">Change Username</button>
+
+                </div>
+
+                <!-- Preferences Section -->
+                <div class="settings-card">
+                    <h3 class="settings-section-title">Preferences</h3>
+                    <div class="preference-item">
+                        <div class="preference-info">
+                            <div class="preference-label">Dark Mode</div>
+                            <div class="preference-description">Switch between light and dark themes</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="darkModeToggle">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Data Management Section -->
+                <div class="settings-card">
+                    <h3 class="settings-section-title">Data Management</h3>
+                    <div class="data-actions">
+                        <button id="export-data-btn" class="btn btn-secondary">Export My Data</button>
+                        <button id="delete-account-btn" class="btn btn-danger">Delete Account</button>
+                    </div>
+                </div>
+
+                <!-- About Section -->
+                <div class="settings-card">
+                    <h3 class="settings-section-title">About</h3>
+                    <div class="account-info">
+                        <div class="info-item">
+                            <span class="info-label">Version:</span>
+                            <span class="info-value">1.0.0</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Developer:</span>
+                            <span class="info-value">Yousef Sayed</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="social-banner" style="margin-top: 2rem;">
+                <span>FlowMate by Yousef Sayed. All rights reserved.</span>
+                <a href="https://x.com/sn9q_?s=21" target="_blank">
+                    <svg class="x-logo" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+        <!-- IBW Calculator -->
+        <div id="ibw-calculator" class="page">
+            <div class="calculator-banner ibw-banner">
+                <h1 class="calculator-title">Ideal Body Weight Calculator</h1>
+                <p>Calculate ideal body weight based on height and gender</p>
+            </div>
+            
+            <div class="calculator-card">
+                <div class="calculator-grid">
+                    <div>
+                        <h2 class="form-title">Input Parameters</h2>
+                        <div class="form-group">
+                            <label class="form-label">Gender</label>
+                            <div class="radio-group">
+                                <label class="radio-label">
+                                    <input type="radio" name="gender" value="male" checked class="radio-input">
+                                    <span>Male</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="gender" value="female" class="radio-input">
+                                    <span>Female</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="height">Height (cm)</label>
+                            <input type="number" id="height" class="form-input">
+                        </div>
+                        <button onclick="calculateIBW()" class="btn btn-primary btn-block">Calculate</button>
+                    </div>
+                    
+                    <div>
+                        <h2 class="form-title">Results</h2>
+                        <div class="result-section">
+                            <div class="result-label">Ideal Body Weight:</div>
+                            <div id="ibw-result" class="result-value result-blue">-</div>
+                            
+                            <div class="divider"></div>
+                            
+                            <h3 class="form-label">Target Tidal Volume (Vt):</h3>
+                            <div class="form-group">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span>Healthy Lung (6-8 ml/kg):</span>
+                                    <span id="vt-healthy" style="font-weight: 500;">-</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span>ARDS (4-6 ml/kg):</span>
+                                    <span id="vt-ards" style="font-weight: 500;">-</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                          <div style="display: flex; justify-content: space-between;">
+                       <span>COPD (8-10 ml/kg):</span>
+                     <span id="vt-copd" style="font-weight: 500;">-</span>
+                   </div>
+                  </div>
+                     <div class="form-group">
+                            <div style="display: flex; justify-content: space-between;">
+                              <span>Spinal Cord Injury (10-15 ml/kg):</span>
+                                 <span id="vt-sci" style="font-weight: 500;">-</span>
+                                 </div>
+                              </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="back-btn-container">
+                <button onclick="showPage('calculators-page')" class="btn btn-secondary">Back to Calculators</button>
+            </div>
+        </div>
+
+        <!-- P/F Ratio Calculator -->
+        <div id="pf-calculator" class="page">
+            <div class="calculator-banner pf-banner">
+                <h1 class="calculator-title">P/F Ratio Calculator</h1>
+                <p>Calculate PaO₂/FiO₂ ratio to assess oxygenation status</p>
+            </div>
+            
+            <div class="calculator-card">
+                <div class="calculator-grid">
+                    <div>
+                        <h2 class="form-title">Input Parameters</h2>
+                        <div class="form-group">
+                            <label class="form-label" for="pao2">PaO₂ (mmHg)</label>
+                            <input type="number" id="pao2" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="fio2">FiO₂ (as decimal, e.g., 0.5 for 50%)</label>
+                            <input type="number" id="fio2" min="0.21" max="1" step="0.01" class="form-input">
+                        </div>
+                        <button onclick="calculatePF()" class="btn btn-red btn-block">Calculate</button>
+                    </div>
+                    
+                    <div>
+                        <h2 class="form-title">Results</h2>
+                        <div class="result-section">
+                            <div class="result-label">P/F Ratio:</div>
+                            <div id="pf-result" class="result-value result-red">-</div>
+                            
+                            <div class="divider"></div>
+                            
+                            <h3 class="form-label">Interpretation:</h3>
+                            <div id="pf-interpretation" style="margin-top: 0.5rem;">
+                                P/F ratio interpretation will appear here.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="back-btn-container">
+                <button onclick="showPage('calculators-page')" class="btn btn-secondary">Back to Calculators</button>
+            </div>
+        </div>
+
+        <!-- ROX Index Calculator -->
+        <div id="rox-calculator" class="page">
+            <div class="calculator-banner rox-banner">
+                <h1 class="calculator-title">ROX Index Calculator</h1>
+                <p>Calculate ROX index to predict HFNC success or failure</p>
+            </div>
+            
+            <div class="calculator-card">
+                <div class="calculator-grid">
+                    <div>
+                        <h2 class="form-title">Input Parameters</h2>
+                        <div class="form-group">
+                            <label class="form-label" for="spo2">SpO₂ (%)</label>
+                            <input type="number" id="spo2" min="70" max="100" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="rox-fio2">FiO₂ (as decimal, e.g., 0.5 for 50%)</label>
+                            <input type="number" id="rox-fio2" min="0.21" max="1" step="0.01" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="resp-rate">Respiratory Rate (breaths/min)</label>
+                            <input type="number" id="resp-rate" min="1" max="80" class="form-input">
+                        </div>
+                        <button onclick="calculateROX()" class="btn btn-purple btn-block">Calculate</button>
+                    </div>
+                    
+                    <div>
+                        <h2 class="form-title">Results</h2>
+                        <div class="result-section">
+                            <div class="result-label">ROX Index:</div>
+                            <div id="rox-result" class="result-value result-purple">-</div>
+                            
+                            <div class="divider"></div>
+                            
+                            <h3 class="form-label">Interpretation:</h3>
+                            <div id="rox-interpretation" style="margin-top: 0.5rem;">
+                                ROX index interpretation will appear here.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="back-btn-container">
+                <button onclick="showPage('calculators-page')" class="btn btn-secondary">Back to Calculators</button>
+            </div>
+        </div>
+
+        <!-- Driving Pressure Calculator -->
+        <div id="driving-calculator" class="page">
+            <div class="calculator-banner driving-banner">
+                <h1 class="calculator-title">Driving Pressure Calculator</h1>
+                <p>Calculate driving pressure (ΔP) for mechanical ventilation</p>
+            </div>
+            
+            <div class="calculator-card">
+                <div class="calculator-grid">
+                    <div>
+                        <h2 class="form-title">Input Parameters</h2>
+                        <div class="form-group">
+                            <label class="form-label" for="plateau-pressure">Plateau Pressure (cmH₂O)</label>
+                            <input type="number" id="plateau-pressure" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="peep">PEEP (cmH₂O)</label>
+                            <input type="number" id="peep" class="form-input">
+                        </div>
+                        <button onclick="calculateDrivingPressure()" class="btn btn-teal btn-block">Calculate</button>
+                    </div>
+                    
+                    <div>
+                        <h2 class="form-title">Results</h2>
+                        <div class="result-section">
+                            <div class="result-label">Driving Pressure (ΔP):</div>
+                            <div id="driving-result" class="result-value result-teal">-</div>
+                            
+                            <div class="divider"></div>
+                            
+                            <h3 class="form-label">Interpretation:</h3>
+                            <div id="driving-interpretation" style="margin-top: 0.5rem;">
+                                Driving pressure interpretation will appear here.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="back-btn-container">
+                <button onclick="showPage('calculators-page')" class="btn btn-secondary">Back to Calculators</button>
+            </div>
+        </div>
+        
+        <!-- Airway Resistance Calculator -->
+        <div id="airway-calculator" class="page">
+            <div class="calculator-banner" style="background: linear-gradient(to right, #f97316, #ea580c);">
+                <h1 class="calculator-title">Airway Resistance Calculator</h1>
+                <p>Calculate airway resistance during mechanical ventilation</p>
+            </div>
+            
+            <div class="calculator-card">
+                <div class="calculator-grid">
+                    <div>
+                        <h2 class="form-title">Input Parameters</h2>
+                        <div class="form-group">
+                            <label class="form-label" for="pip">Peak Inspiratory Pressure (cmH₂O)</label>
+                            <input type="number" id="pip" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="plateau">Plateau Pressure (cmH₂O)</label>
+                            <input type="number" id="plateau" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="flow">Inspiratory Flow (L/sec)</label>
+                            <input type="number" id="flow" class="form-input">
+                        </div>
+                        <button onclick="calculateAirwayResistance()" class="btn btn-block" style="background-color: #f97316; color: white;">Calculate</button>
+                    </div>
+                    
+                    <div>
+                        <h2 class="form-title">Results</h2>
+                        <div class="result-section">
+                            <div class="result-label">Airway Resistance:</div>
+                            <div id="airway-result" class="result-value" style="color: #f97316;">-</div>
+                            
+                            <div class="divider"></div>
+                            
+                            <h3 class="form-label">Interpretation:</h3>
+                            <div id="airway-interpretation" style="margin-top: 0.5rem;">
+                                Airway resistance interpretation will appear here.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="back-btn-container">
+                <button onclick="showPage('calculators-page')" class="btn btn-secondary">Back to Calculators</button>
+            </div>
+        </div>
+        
+        <!-- Compliance Calculator -->
+        <div id="compliance-calculator" class="page">
+            <div class="calculator-banner" style="background: linear-gradient(to right, #22c55e, #16a34a);">
+                <h1 class="calculator-title">Static Compliance Calculator</h1>
+                <p>Calculate static compliance during mechanical ventilation</p>
+            </div>
+            
+            <div class="calculator-card">
+                <div class="calculator-grid">
+                    <div>
+                        <h2 class="form-title">Input Parameters</h2>
+                        <div class="form-group">
+                            <label class="form-label" for="tidal-volume">Tidal Volume (mL)</label>
+                            <input type="number" id="tidal-volume" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="plateau-pressure-c">Plateau Pressure (cmH₂O)</label>
+                            <input type="number" id="plateau-pressure-c" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="peep-c">PEEP (cmH₂O)</label>
+                            <input type="number" id="peep-c" class="form-input">
+                        </div>
+                        <button onclick="calculateCompliance()" class="btn btn-block" style="background-color: #22c55e; color: white;">Calculate</button>
+                    </div>
+                    
+                    <div>
+                        <h2 class="form-title">Results</h2>
+                        <div class="result-section">
+                            <div class="result-label">Static Compliance:</div>
+                            <div id="compliance-result" class="result-value" style="color: #22c55e;">-</div>
+                            
+                            <div class="divider"></div>
+                            
+                            <h3 class="form-label">Interpretation:</h3>
+                            <div id="compliance-interpretation" style="margin-top: 0.5rem;">
+                                Static compliance interpretation will appear here.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="back-btn-container">
+                <button onclick="showPage('calculators-page')" class="btn btn-secondary">Back to Calculators</button>
+            </div>
+        </div>
+        
+        <!-- Minute Ventilation Calculator -->
+        <div id="mv-calculator" class="page">
+            <div class="calculator-banner" style="background: linear-gradient(to right, #f59e0b, #d97706);">
+                <h1 class="calculator-title">Minute Ventilation Calculator</h1>
+                <p>Calculate desired minute ventilation based on PaCO₂ targets</p>
+            </div>
+            
+            <div class="calculator-card">
+                <div class="calculator-grid">
+                    <div>
+                        <h2 class="form-title">Input Parameters</h2>
+                        <div class="form-group">
+                            <label class="form-label" for="current-mv">Current Minute Ventilation (L/min)</label>
+                            <input type="number" id="current-mv" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="current-paco2">Current PaCO₂ (mmHg)</label>
+                            <input type="number" id="current-paco2" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="target-paco2">Target PaCO₂ (mmHg)</label>
+                            <input type="number" id="target-paco2" class="form-input">
+                        </div>
+                        <button onclick="calculateMV()" class="btn btn-block" style="background-color: #f59e0b; color: white;">Calculate</button>
+                    </div>
+                    
+                    <div>
+                        <h2 class="form-title">Results</h2>
+                        <div class="result-section">
+                            <div class="result-label">Target Minute Ventilation:</div>
+                            <div id="mv-result" class="result-value" style="color: #f59e0b;">-</div>
+                            
+                            <div class="divider"></div>
+                            
+                            <h3 class="form-label">Interpretation:</h3>
+                            <div id="mv-interpretation" style="margin-top: 0.5rem;">
+                                Minute ventilation interpretation will appear here.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="back-btn-container">
+                <button onclick="showPage('calculators-page')" class="btn btn-secondary">Back to Calculators</button>
+            </div>
+        </div>
+        
+        <!-- FiO2 Calculator -->
+        <div id="fio2-calculator" class="page">
+            <div class="calculator-banner" style="background: linear-gradient(to right, #ec4899, #db2777);">
+                <h1 class="calculator-title">Desired FiO₂ Calculator</h1>
+                <p>Calculate desired FiO₂ based on PaO₂ targets</p>
+            </div>
+            
+            <div class="calculator-card">
+                <div class="calculator-grid">
+                    <div>
+                        <h2 class="form-title">Input Parameters</h2>
+                        <div class="form-group">
+                            <label class="form-label" for="current-pao2">Current PaO₂ (mmHg)</label>
+                            <input type="number" id="current-pao2" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="current-fio2">Current FiO₂ (as decimal, e.g., 0.5 for 50%)</label>
+                            <input type="number" id="current-fio2" min="0.21" max="1" step="0.01" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="target-pao2">Target PaO₂ (mmHg)</label>
+                            <input type="number" id="target-pao2" class="form-input">
+                        </div>
+                        <button onclick="calculateFiO2()" class="btn btn-block" style="background-color: #ec4899; color: white;">Calculate</button>
+                    </div>
+                    
+                    <div>
+                        <h2 class="form-title">Results</h2>
+                        <div class="result-section">
+                            <div class="result-label">Desired FiO₂:</div>
+                            <div id="fio2-result" class="result-value" style="color: #ec4899;">-</div>
+                            
+                            <div class="divider"></div>
+                            
+                            <h3 class="form-label">Interpretation:</h3>
+                            <div id="fio2-interpretation" style="margin-top: 0.5rem;">
+                                Desired FiO₂ interpretation will appear here.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="back-btn-container">
+                <button onclick="showPage('calculators-page')" class="btn btn-secondary">Back to Calculators</button>
+            </div>
+        </div>
+
+        <!-- Winter’s Formula Calculator -->
+<div id="winter-calculator" class="page">
+  <div class="calculator-banner rox-banner">
+    <h1 class="calculator-title">Winter’s Formula Calculator</h1>
+    <p>Respiratory compensation in metabolic acidosis</p>
+  </div>
+
+  <div class="calculator-card">
+    <div class="calculator-grid">
+      <div>
+        <h2 class="form-title">Input Parameters</h2>
+
+        <div class="form-group">
+          <label class="form-label" for="winter-hco3">HCO₃⁻ (mmol/L)</label>
+          <input type="number" id="winter-hco3" class="form-input" step="0.1">
+        </div>
+
+        
+
+        <button onclick="calculateWinter()" class="btn btn-primary btn-block">Calculate</button>
+      </div>
+
+      <div>
+        <h2 class="form-title">Results</h2>
+        <div class="result-section">
+          <div class="result-label">Expected PaCO₂:</div>
+          <div id="winter-paco2-result" class="result-value">-</div>
+
+          <div class="divider"></div>
+
+          <div class="result-label">Expected Range (±2):</div>
+          <div id="winter-range" class="result-value">-</div>
+
+          <div class="divider"></div>
+
+          <h3 class="form-label">Interpretation:</h3>
+          <div id="winter-interpretation" style="margin-top:.5rem;">
+            interpretation will appear here
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="back-btn-container">
+    <button onclick="showPage('calculators-page')" class="btn btn-secondary">Back to Calculators</button>
+  </div>
+</div>
+
+<!-- Desired RR Calculator -->
+<div id="desired-rr-calculator" class="page">
+  <div class="calculator-banner driving-banner">
+    <h1 class="calculator-title">Desired RR Calculator</h1>
+    <p>Compute RR to reach a target PaCO₂</p>
+  </div>
+
+  <div class="calculator-card">
+    <div class="calculator-grid">
+      <div>
+        <h2 class="form-title">Input Parameters</h2>
+
+        <div class="form-group">
+          <label class="form-label" for="rr-current">Current RR (breaths/min)</label>
+          <input type="number" id="rr-current" class="form-input" step="1">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="paco2-current">Current PaCO₂ (mmHg)</label>
+          <input type="number" id="paco2-current" class="form-input" step="0.1">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="paco2-desired">Desired PaCO₂ (mmHg)</label>
+          <input type="number" id="paco2-desired" class="form-input" step="0.1">
+        </div>
+
+        <button onclick="calculateDesiredRR()" class="btn btn-primary btn-block">Calculate</button>
+      </div>
+
+      <div>
+        <h2 class="form-title">Results</h2>
+        <div class="result-section">
+          <div class="result-label">Required RR:</div>
+          <div id="rr-result" class="result-value">-</div>
+
+          <div class="divider"></div>
+
+          <h3 class="form-label">Interpretation:</h3>
+          <div id="rr-interpretation" style="margin-top:.5rem;">
+            Result guidance will appear here.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="back-btn-container">
+    <button onclick="showPage('calculators-page')" class="btn btn-secondary">Back to Calculators</button>
+  </div>
+</div>
+
+
+        
+
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="nav-bar">
+        <div class="nav-content">
+            <div id="nav-home" class="nav-item active" onclick="showPage('home-page')">
+                <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                <span class="nav-label">Home</span>
+            </div>
+            <div id="nav-calculators" class="nav-item" onclick="showPage('calculators-page')">
+                <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+                    <line x1="12" y1="10" x2="12" y2="10"></line>
+                    <line x1="8" y1="14" x2="8" y2="14"></line>
+                    <line x1="12" y1="14" x2="12" y2="14"></line>
+                    <line x1="16" y1="14" x2="16" y2="14"></line>
+                    <line x1="8" y1="18" x2="8" y2="18"></line>
+                    <line x1="12" y1="18" x2="12" y2="18"></line>
+                    <line x1="16" y1="18" x2="16" y2="18"></line>
+                </svg>
+                <span class="nav-label">Calculators</span>
+            </div>
+            <div id="nav-schedule" class="nav-item" onclick="showPage('schedule-page')">
+                <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                <span class="nav-label">Schedule</span>
+            </div>
+            <div id="nav-notes" class="nav-item" onclick="showPage('notes-page')">
+                <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+                <span class="nav-label">Notes</span>
+            </div>
+            <div id="nav-settings" class="nav-item" onclick="showPage('settings-page')">
+                <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+                <span class="nav-label">Settings</span>
+            </div>
+        </div>
+        </nav>
+<!-- Login/Register Modal -->
+<div id="login-modal" class="hidden" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(59, 130, 246, 0.9) 0%, rgba(37, 99, 235, 0.9) 100%); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; z-index: 9999; width: 100vw; height: 100vh; margin: 0; padding: 20px; font-family: 'Inter', sans-serif; overflow-y: auto;">
+    <div style="position: relative; z-index: 2; width: 100%; max-width: 400px; margin: auto;">
+        <!-- Login Form -->
+        <div id="login-form" style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); border-radius: 16px; padding: 40px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.3);">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <img src="assets/Logo Image 2025-07-26 at 3.30.13 PM.jpeg.jpg" alt="FlowMate Logo" style="width: 60px; height: 60px; border-radius: 12px; margin: 0 auto 15px; display: block;">
+                <h2 style="margin-bottom: 10px; font-size: 28px; font-weight: 1000; color: #1e293b;">Welcome to FlowMate</h2>
+            </div>
+            <p style="text-align: center; margin-bottom: 30px; color: #64748b; font-size: 14px;">Please sign in to your account</p>
+            
+            <!-- Google Sign In Button -->
+            <button id="google-signin-btn" style="width: 100%; padding: 10px; background: white; border: 1px solid #e2e8f0; border-radius: 8px; color: #1e293b; font-size: 16px; font-weight: 500; cursor: pointer; transition: all 0.2s ease; margin-bottom: 10px; display: flex; align-items: center; justify-content: center;">
+                <svg style="width: 20px; height: 20px; margin-right: 10px;" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                Continue with Google
+            </button>
+            
+            <!-- iPad/iOS Help Message -->
+            <div id="ipad-help-message" style="display: none; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); color: #2563eb; padding: 10px; border-radius: 6px; font-size: 12px; margin-bottom: 10px; text-align: center;">
+                <strong>iPad Users:</strong> If Google Sign-In doesn't work, try enabling popups in Safari settings or use email sign-in below.
+            </div>
+            
+            <div style="position: relative; margin-bottom: 20px;">
+                <div style="position: absolute; inset: 0; display: flex; align-items: center;">
+                    <div style="width: 100%; border-top: 1px solid #e2e8f0;"></div>
+                </div>
+                <div style="position: relative; display: flex; justify-content: center; font-size: 14px;">
+                    <span style="padding: 0 10px; background: white; color: #64748b;">Or continue with email</span>
+                </div>
+            </div>
+            
+            <form id="email-login-form">
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500; font-size: 14px; color: #1e293b;">Email or Username</label>
+                    <input type="text" id="login-email" style="width: 100%; padding: 12px 16px; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 10px; background: rgba(255, 255, 255, 0.8); color: #1e293b; font-size: 14px; transition: all 0.2s ease;" placeholder="Enter your email or username" required>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500; font-size: 14px; color: #1e293b;">Password</label>
+                    <input type="password" id="login-password" style="width: 100%; padding: 12px 16px; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 10px; background: rgba(255, 255, 255, 0.8); color: #1e293b; font-size: 14px; transition: all 0.2s ease;" placeholder="Enter your password" required>
+                </div>
+                
+                <div style="text-align: right; margin-bottom: 20px;">
+                    <button type="button" id="forgot-password-btn" style="color: #3b82f6; text-decoration: none; font-weight: 500; background: none; border: none; cursor: pointer; font-size: 14px;">Forgot password?</button>
+                </div>
+                
+                <button type="submit" style="width: 100%; padding: 14px; background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%); border: none; border-radius: 8px; color: white; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; margin-bottom: 20px;">Sign In</button>
+            </form>
+            
+            <!-- Error/Success Messages for Login -->
+            <div id="auth-message" style="margin-top: 15px; padding: 12px; border-radius: 8px; display: none; text-align: center; font-size: 14px; position: relative; z-index: 10;"></div>
+            
+            <div style="text-align: center; font-size: 14px;">
+                <p style="color: #64748b;">
+                    Don't have an account? 
+                    <button id="show-register-btn" style="color: #3b82f6; text-decoration: none; font-weight: 500; background: none; border: none; cursor: pointer;">Sign up</button>
+                </p>
+                <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #e2e8f0;">
+                    <button id="continue-as-guest-btn" style="color: #64748b; text-decoration: none; font-weight: 500; background: none; border: none; cursor: pointer; font-size: 14px;">
+                        Continue as Guest
+                    </button>
+                    <p style="color: #94a3b8; font-size: 12px; margin-top: 8px;">
+                        Browse calculators and view shared notes without an account
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Register Form -->
+        <div id="register-form" class="hidden" style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); border-radius: 16px; padding: 40px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.3);">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <img src="assets/Logo Image 2025-07-26 at 3.30.13 PM.jpeg.jpg" alt="FlowMate Logo" style="width: 60px; height: 60px; border-radius: 12px; margin: 0 auto 15px; display: block;">
+                <h2 style="margin-bottom: 10px; font-size: 28px; font-weight: 600; color: #1e293b;">Create Account</h2>
+            </div>
+            <p style="text-align: center; margin-bottom: 30px; color: #64748b; font-size: 14px;">Join FlowMate today</p>
+            
+            <form id="email-register-form">
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500; font-size: 14px; color: #1e293b;">Username</label>
+                    <input type="text" id="register-username" style="width: 100%; padding: 12px 16px; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 10px; background: rgba(255, 255, 255, 0.8); color: #1e293b; font-size: 14px; transition: all 0.2s ease;" placeholder="Choose a username" required>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500; font-size: 14px; color: #1e293b;">Email</label>
+                    <input type="email" id="register-email" style="width: 100%; padding: 12px 16px; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 10px; background: rgba(255, 255, 255, 0.8); color: #1e293b; font-size: 14px; transition: all 0.2s ease;" placeholder="Enter your email" required>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500; font-size: 14px; color: #1e293b;">Password</label>
+                    <input type="password" id="register-password" style="width: 100%; padding: 12px 16px; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 10px; background: rgba(255, 255, 255, 0.8); color: #1e293b; font-size: 14px; transition: all 0.2s ease;" placeholder="Create a password" required>
+                </div>
+                
+                <button type="submit" style="width: 100%; padding: 14px; background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%); border: none; border-radius: 8px; color: white; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; margin-bottom: 20px;">Create Account</button>
+            </form>
+            
+            <!-- Error/Success Messages for Register -->
+            <div id="auth-message-register" style="margin-top: 15px; padding: 12px; border-radius: 8px; display: none; text-align: center; font-size: 14px; position: relative; z-index: 10;"></div>
+            
+            <div style="text-align: center; font-size: 14px;">
+                <p style="color: #64748b;">
+                    Already have an account? 
+                    <button id="show-login-btn" style="color: #3b82f6; text-decoration: none; font-weight: 500; background: none; border: none; cursor: pointer;">Sign in</button>
+                </p>
+            </div>
+        </div>
+        
+        <!-- Forgot Password Form -->
+        <div id="forgot-password-form" class="hidden" style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); border-radius: 16px; padding: 40px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.3);">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <img src="assets/Logo Image 2025-07-26 at 3.30.13 PM.jpeg.jpg" alt="FlowMate Logo" style="width: 60px; height: 60px; border-radius: 12px; margin: 0 auto 15px; display: block;">
+                <h2 style="margin-bottom: 10px; font-size: 28px; font-weight: 600; color: #1e293b;">Reset Password</h2>
+            </div>
+            <p style="text-align: center; margin-bottom: 30px; color: #64748b; font-size: 14px;">Enter your email to receive a password reset link</p>
+            
+            <form id="reset-password-form">
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500; font-size: 14px; color: #1e293b;">Email Address</label>
+                    <input type="email" id="reset-email" style="width: 100%; padding: 12px 16px; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 10px; background: rgba(255, 255, 255, 0.8); color: #1e293b; font-size: 14px; transition: all 0.2s ease;" placeholder="Enter your email address" required>
+                </div>
+                
+                <button type="submit" style="width: 100%; padding: 14px; background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%); border: none; border-radius: 8px; color: white; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; margin-bottom: 20px;">Send Reset Link</button>
+            </form>
+            
+            <!-- Error/Success Messages for Reset Password -->
+            <div id="auth-message-reset" style="margin-top: 15px; padding: 12px; border-radius: 8px; display: none; text-align: center; font-size: 14px; position: relative; z-index: 10;"></div>
+            
+            <div style="text-align: center; font-size: 14px;">
+                <p style="color: #64748b;">
+                    Remember your password? 
+                    <button id="back-to-login-btn" style="color: #3b82f6; text-decoration: none; font-weight: 500; background: none; border: none; cursor: pointer;">Back to Sign In</button>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Login Modal Scrolling */
+#login-modal {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+#login-modal::-webkit-scrollbar {
+    width: 8px;
+}
+
+#login-modal::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+#login-modal::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+}
+
+#login-modal::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* Responsive design for smaller screens */
+@media (max-height: 600px) {
+    #login-modal {
+        align-items: flex-start;
+        padding: 10px;
+    }
+    
+    #login-modal > div {
+        margin: 10px auto;
+    }
+    
+    #login-form, #register-form, #forgot-password-form {
+        padding: 20px;
+        max-height: calc(100vh - 40px);
+        overflow-y: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    #login-modal {
+        padding: 10px;
+    }
+    
+    #login-modal > div {
+        max-width: 100%;
+    }
+    
+    #login-form, #register-form, #forgot-password-form {
+        padding: 20px;
+    }
+}
+
+#login-modal input:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+}
+
+#login-modal input::placeholder {
+    color: rgba(30, 41, 59, 0.6);
+}
+
+#login-modal button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+}
+
+#login-modal button:active {
+    transform: translateY(0);
+}
+
+#google-signin-btn:hover {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+#auth-message, #auth-message-register {
+    margin-top: 15px !important;
+    padding: 12px !important;
+    border-radius: 8px !important;
+    text-align: center !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    position: relative !important;
+    z-index: 10 !important;
+    min-height: 20px !important;
+}
+
+/* Login field styles */
+#login-email {
+    transition: all 0.3s ease;
+}
+
+#auth-message:not([style*="display: none"]), #auth-message-register:not([style*="display: none"]) {
+    display: block !important;
+}
+
+/* Settings Page Styles */
+.settings-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.settings-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+}
+
+.settings-section-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #3b82f6;
+    padding-bottom: 8px;
+}
+
+.form-textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+    transition: border-color 0.2s ease;
+}
+
+.form-textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.account-info {
+    margin-bottom: 20px;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.info-item:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    font-weight: 500;
+    color: #64748b;
+    font-size: 14px;
+}
+
+.info-value {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 14px;
+}
+
+.preference-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.preference-item:last-child {
+    border-bottom: none;
+}
+
+.preference-info {
+    flex: 1;
+}
+
+.preference-label {
+    display: block;
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+
+.preference-description {
+    display: block;
+    color: #64748b;
+    font-size: 14px;
+}
+
+/* Switch Toggle */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #cbd5e1;
+    transition: 0.3s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #3b82f6;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/* Dark Mode Switch Toggle */
+.dark-mode .slider {
+    background-color: #4b5563;
+}
+
+.dark-mode .slider:before {
+    background-color: #d1d5db;
+}
+
+.dark-mode input:checked + .slider {
+    background-color: #1e40af;
+}
+
+.data-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.data-actions .btn {
+    flex: 1;
+    min-width: 120px;
+}
+
+@media (max-width: 480px) {
+    #login-modal {
+        padding: 10px;
+    }
+    
+    #login-modal > div > div {
+        padding: 30px 20px;
+    }
+    
+    .settings-container {
+        padding: 16px;
+    }
+    
+    .settings-card {
+        padding: 20px;
+    }
+    
+    .data-actions {
+        flex-direction: column;
+    }
+    
+    .data-actions .btn {
+        width: 100%;
+    }
+}
+
+/* Image Viewer Styles */
+#image-viewer-modal {
+    display: none !important;
+}
+
+#image-viewer-modal:not(.hidden) {
+    display: flex !important;
+}
+
+.image-viewer-close:hover,
+.image-nav-btn:hover,
+.zoom-btn:hover {
+    background-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.viewer-image {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.viewer-image.zoomed {
+    cursor: grabbing;
+}
+
+.image-container {
+    touch-action: none;
+}
+
+/* Hide navigation buttons when only one image */
+.image-nav-btn.hidden {
+    display: none !important;
+}
+
+/* Hide zoom controls when not needed */
+.image-zoom-controls.hidden {
+    display: none !important;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+    .image-nav-btn {
+        width: 40px !important;
+        height: 40px !important;
+    }
+    
+    .zoom-btn {
+        width: 35px !important;
+        height: 35px !important;
+    }
+    
+    .image-counter {
+        font-size: 12px !important;
+        padding: 6px 10px !important;
+    }
+}
+
+/* Dark mode support */
+.dark-mode .image-viewer-modal {
+    background-color: rgba(0, 0, 0, 0.95);
+}
+</style>
+
+<script src="js/firebase-config.js"></script>
+<script src="js/calculators.js?v=2"></script>
+<script src="js/notes.js?v=2025-08-10a"></script>
+<script src="js/schedule.js"></script>
+<script src="js/home.js"></script>
+<script src="js/user.js"></script>
+<script src="js/navigation.js"></script>
+<script src="js/main.js"></script>
+<script src="js/settings.js"></script>
+<script src="js/image-viewer.js"></script>
+<script src="js/change-username.js?v=4"></script>
+
+
+<!-- Change Username Modal -->
+<div id="change-username-modal" class="hidden"
+     style="position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.35); z-index: 1000; padding: 20px; font-family: 'Inter', sans-serif;">
+  <div style="position: relative; width: 100%; max-width: 420px; background: white; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); border: 1px solid #e5e7eb;">
+    <div style="display:flex; align-items:center; justify-content: space-between; padding: 16px 18px; border-bottom: 1px solid #e5e7eb;">
+      <div style="font-weight:600; font-size: 16px; color:#111827;">Change Username</div>
+      <button id="close-change-username" aria-label="Close"
+              style="background: transparent; border: none; cursor: pointer; padding: 6px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <form id="change-username-form" style="padding: 16px 18px;">
+      <label for="new-username-input" style="display:block; font-size: 14px; color:#374151; margin-bottom: 6px;">New Username</label>
+      <input id="new-username-input" name="username" inputmode="text" autocomplete="off" required
+             placeholder="Enter a new username"
+             style="width:100%; padding: 12px 14px; border: 1px solid #d1d5db; border-radius: 10px; font-size: 15px; outline: none;">
+      <div id="change-username-hint" style="margin-top:8px; font-size: 12px; color:#6b7280;">
+        Allowed: letters, numbers, underscore. Length 3–20.
+      </div>
+
+      <div id="change-username-error" role="alert"
+           style="display:none; margin-top:10px; font-size: 13px; color:#b91c1c; font-weight:500;"></div>
+      <div id="change-username-success" role="status"
+           style="display:none; margin-top:10px; font-size: 13px; color:#065f46; font-weight:500;"></div>
+
+      <div style="display:flex; gap:10px; justify-content:flex-end; margin-top: 16px;">
+        <button type="button" id="cancel-change-username" class="btn"
+                style="background:#f3f4f6;">Cancel</button>
+        <button type="submit" id="submit-change-username" class="btn btn-primary">
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+</body>
+</html>
