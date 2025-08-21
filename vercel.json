@@ -58,11 +58,6 @@
       ]
     }
   ],
-  "functions": {
-    "app": {
-      "includeFiles": "**"
-    }
-  },
   "cleanUrls": true,
   "trailingSlash": false
 }
