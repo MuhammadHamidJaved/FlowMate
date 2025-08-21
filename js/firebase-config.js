@@ -1,14 +1,14 @@
 // Firebase Configuration
 if (typeof firebaseConfig === 'undefined') {
-    const firebaseConfig = {
-        apiKey: "AIzaSyCkjZrximy6HsnmTQu3zUw55BFC2PsJuQ4",
-        authDomain: "flowmate-4a79c.firebaseapp.com",
-        projectId: "flowmate-4a79c",
-        storageBucket: "flowmate-4a79c.firebasestorage.app",
-        messagingSenderId: "730742939743",
-        appId: "1:730742939743:web:fdefbdacd2a2ee79537bea",
-        measurementId: "G-RQ7CWQFQXC"
-    };
+    // const firebaseConfig = {
+    //     apiKey: "AIzaSyCkjZrximy6HsnmTQu3zUw55BFC2PsJuQ4",
+    //     authDomain: "flowmate-4a79c.firebaseapp.com",
+    //     projectId: "flowmate-4a79c",
+    //     storageBucket: "flowmate-4a79c.firebasestorage.app",
+    //     messagingSenderId: "730742939743",
+    //     appId: "1:730742939743:web:fdefbdacd2a2ee79537bea",
+    //     measurementId: "G-RQ7CWQFQXC"
+    // };
 
     // Production environment check
     const isProduction = window.location.hostname !== 'localhost' && 
@@ -18,15 +18,15 @@ if (typeof firebaseConfig === 'undefined') {
     console.log('Environment:', isProduction ? 'Production' : 'Development');
     console.log('Hostname:', window.location.hostname);
 
-    // const firebaseConfig = {
-    //     apiKey: "AIzaSyAki9iTse2IDy0wINrGxWAJ3hxL2AX9ywI",
-    //     authDomain: "login-259d9.firebaseapp.com",
-    //     projectId: "login-259d9",
-    //     storageBucket: "login-259d9.firebasestorage.app",
-    //     messagingSenderId: "202184599983",
-    //     appId: "1:202184599983:web:011884a1989143a788e75a",
-    //     measurementId: "G-YJZTW03RLR"
-    // };
+    const firebaseConfig = {
+        apiKey: "AIzaSyAki9iTse2IDy0wINrGxWAJ3hxL2AX9ywI",
+        authDomain: "login-259d9.firebaseapp.com",
+        projectId: "login-259d9",
+        storageBucket: "login-259d9.firebasestorage.app",
+        messagingSenderId: "202184599983",
+        appId: "1:202184599983:web:011884a1989143a788e75a",
+        measurementId: "G-YJZTW03RLR"
+    };
 
     // Error handling wrapper
     function handleFirebaseError(error, context) {
